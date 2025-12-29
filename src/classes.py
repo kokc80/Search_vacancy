@@ -1,4 +1,4 @@
-# Классы
+#  Классы
 import requests
 from abc import ABC, abstractmethod
 
