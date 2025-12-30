@@ -15,6 +15,7 @@ class Parser(ABC):
     def connect_to_api(self):
         pass
 
+
 class HeadHunterAPI(Parser):
     """
     Класс для получения вакансий с API HeadHunter
