@@ -1,4 +1,5 @@
 from src.classes import HeadHunterAPI
+
 # Функция для взаимодействия с пользователем
 def user_interaction():
     platforms = ["HeadHunter"]
@@ -18,3 +19,4 @@ def user_interaction():
 
 if __name__ == "__main__":
     user_interaction()
+PythonFinalizationError

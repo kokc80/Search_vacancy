@@ -1,4 +1,4 @@
-# Классы
+#  Классы
 import requests
 from abc import ABC, abstractmethod
 
@@ -14,6 +14,7 @@ class Parser(ABC):
     @abstractmethod
     def connect_to_api(self):
         pass
+
 
 class HeadHunterAPI(Parser):
     """
