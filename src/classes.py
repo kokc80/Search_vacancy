@@ -32,21 +32,22 @@ class HeadHunterAPI(Parser):
         response = requests.get(self.url, headers=self.headers, params=self.params)
         status = response.status_code
         if status == 200:
-            # print ("connect 200")
+            print("connect 200")
             return response
         else:
             return 'Ошибка при обращении к API - error'
 
     def load_vacancies(self, keyword):
         self.params['text'] = keyword
-        while self.params.get('page') != 20:
+        while self.params.get('page') != 5:
             response = requests.get(self.url, headers=self.headers, params=self.params)
             vacancies = response.json()['items']
             self.vacancies.extend(vacancies)
             self.params['page'] += 1
 
+
 if __name__ == "__main__":
-      hh_api = HeadHunterAPI()
-      hh_api.connect_to_api()
-      api_vacans = hh_api.load_vacancies("Python")
-      print(api_vacans)
+    hh_api = HeadHunterAPI()
+    hh_api.connect_to_api()
+    api_vacancions = hh_api.load_vacancies("Python")
+    print("res", api_vacancions)
