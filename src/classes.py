@@ -42,7 +42,7 @@ class HeadHunterAPI(Parser):
             print("PAGE", self.params.get('page'))
             response = requests.get(self.url, headers=self.headers, params=self.params)
             vacancies_items = response.json()['items']
-            print("VAC\n", vacancies_items)
+            # print("VAC\n", vacancies_items)
             self.vacancies.extend(vacancies_items)
             self.params['page'] += 1
             return vacancies_items
@@ -64,4 +64,4 @@ if __name__ == "__main__":
     hh_api = HeadHunterAPI()
     hh_api.connect_to_api()
     api_vacantions = hh_api.load_vacancies("Python")
-    print("REZ VACANTIONS", api_vacantions)
+    #print("REZ VACANTIONS", api_vacantions)
