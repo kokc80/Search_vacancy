@@ -1,4 +1,11 @@
-import json, os, logging
+import json, os, logging, pandas as pd
+from math import isnan
+
+from mypy.stubgen import is_none_expr
+from mypy.types import NoneType
+
+from src.classes import Vacancy
+
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root_logger = logging.getLogger()
 file_log = f"{ROOT_DIR}\\Logs\\search_vacancy.log"
@@ -39,16 +46,33 @@ def read_json(filename=None) -> list[dict]:
         # print(e)
         app_logger.error(e)
 
+def vacancy_class_load(vacancies_list: list):
+    vacancy_class = Vacancy
+    for vacancy_item in vacancies_list:
+        vacancy_class.url = vacancy_item["area"]["url"]
+        vacancy_class.company = vacancy_item["employer"]["name"]
+        vacancy_class.title = vacancy_item["name"]
+        vacancy_class.employment_form = (vacancy_item["employment_form"]["id"] + " - " +
+                                         vacancy_item["employment_form"]["name"])
+        vacancy_class.salary_currency = vacancy_item.get("salary",{}.get("currency", "Not Found"))
+        vacancy_class.salary_to = vacancy_item.get("salary",{}.get("to", "Note Found"))
+        vacancy_class.requiredSkills = vacancy_item["snippet"]["requirement"]
+        vacancy_class.description = vacancy_item["snippet"]["responsibility"]
+        vacancy_class.location = vacancy_item.get("addres",{}.get("raw", "Not Found"))
+    return vacancy_class
+
+
 
 def filter_vacancies(vacancies_list: list, filter_words: list):
     """Функция фильтрации вакансий по"""
     filtered_list: list = []
     i = 0
     while i < len(filter_words):
+        print(filter_words[i])
         for dict_item in vacancies_list:
-            # print(filter_words, dict_item)
-            if filter_words[i] ==  dict_item:
+            if filter_words[i] in dict_item:
                 filtered_list.extend(dict_item)
+        print(filter_words[i], dict_item)
         i += 1
     return filtered_list
 

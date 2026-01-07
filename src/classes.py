@@ -43,6 +43,7 @@ class HeadHunterAPI(Parser):
             response = requests.get(self.url, headers=self.headers, params=self.params)
             vacancies_items = response.json()['items']
             # print("VAC\n", vacancies_items)
+
             self.vacancies.extend(vacancies_items)
             self.params['page'] += 1
             return vacancies_items
@@ -52,16 +53,17 @@ class HeadHunterAPI(Parser):
 class Vacancy:
     url: str
     company: str
-    companyAbout: str
     title: str
-    salary: str
+    employment_form: str
+    salary_currency: str
+    salary_from: float
+    salary_to: float
     requiredSkills: str
-    locationAndTypeOfEmployment: str
+    location: str
     description: str
 
-    
 if __name__ == "__main__":
     hh_api = HeadHunterAPI()
     hh_api.connect_to_api()
     api_vacantions = hh_api.load_vacancies("Python")
-    #print("REZ VACANTIONS", api_vacantions)
+    print("REZ VACANTIONS", api_vacantions)

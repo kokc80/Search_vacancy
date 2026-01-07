@@ -1,6 +1,7 @@
 import json, os
-from src.classes import HeadHunterAPI
-from src.functions import filter_vacancies, get_vacancies_by_salary, sort_vacancies, get_top_vacancies, print_vacancies, read_json
+from src.classes import HeadHunterAPI,Vacancy
+from src.functions import vacancy_class_load, get_vacancies_by_salary, sort_vacancies, get_top_vacancies
+from src.functions import print_vacancies, read_json, vacancy_class_load
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -12,7 +13,7 @@ def user_interaction():
     # search_query = input("Введите поисковый запрос: ") # Python
     search_query = "Python"
     # filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split() # currency = "RUR", area = "131"
-    filter_words = ["'currency': 'RUR'"]
+    filter_words = "'currency': 'RUR'"
     print(filter_words)
     # top_n = int(input("Введите количество вакансий для вывода в топ N: "))
     top_n = 5
@@ -22,8 +23,9 @@ def user_interaction():
     with open(ROOT_DIR+'\\data\\vacations.json', 'w', encoding='utf-8') as f:
         json.dump(vacancies_list, f, indent=4, sort_keys=True, ensure_ascii=False)
     vacancies_list = read_json(ROOT_DIR+'\\data\\vacations.json')
-    filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
-    print("filtered_vacancies", filtered_vacancies)
+    ttt = vacancy_class_load(vacancies_list)
+    print(ttt.url,ttt.company,ttt.title,ttt.employment_form,ttt.salary_to,ttt.description,ttt.location)
+    # print("filtered_vacancies", filtered_vacancies)
     # ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
     # print("ranged_vacancies", ranged_vacancies)
 
