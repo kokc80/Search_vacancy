@@ -38,12 +38,11 @@ class HeadHunterAPI(Parser):
     def load_vacancies(self, keyword):
         """Получение списка вакансий"""
         self.params['text'] = keyword
-        while self.params.get('page') != 2:
+        while self.params.get('page') != 20:
             print("PAGE", self.params.get('page'))
             response = requests.get(self.url, headers=self.headers, params=self.params)
             vacancies_items = response.json()['items']
             # print("VAC\n", vacancies_items)
-
             self.vacancies.extend(vacancies_items)
             self.params['page'] += 1
             return vacancies_items
@@ -51,6 +50,7 @@ class HeadHunterAPI(Parser):
 # класс представляет одну вакансию
 # аттрибуты класса - части вакансии из разметки
 class Vacancy:
+    idd: int
     url: str
     company: str
     title: str

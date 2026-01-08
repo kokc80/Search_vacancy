@@ -46,10 +46,14 @@ def read_json(filename=None) -> list[dict]:
         # print(e)
         app_logger.error(e)
 
-def vacancy_class_load(vacancies_list: list):
-    vacancy_class = Vacancy
+def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
+    vacancy_class_list = []
+    idd = 0
     for vacancy_item in vacancies_list:
-        vacancy_class.url = vacancy_item["area"]["url"]
+        vacancy_class = Vacancy
+        idd = idd + 1
+        vacancy_class.idd = idd
+        vacancy_class.url = vacancy_item["employer"]["vacancies_url"]
         vacancy_class.company = vacancy_item["employer"]["name"]
         vacancy_class.title = vacancy_item["name"]
         vacancy_class.employment_form = (vacancy_item["employment_form"]["id"] + " - " +
@@ -59,9 +63,19 @@ def vacancy_class_load(vacancies_list: list):
         vacancy_class.requiredSkills = vacancy_item["snippet"]["requirement"]
         vacancy_class.description = vacancy_item["snippet"]["responsibility"]
         vacancy_class.location = vacancy_item.get("addres",{}.get("raw", "Not Found"))
-    return vacancy_class
+        vacancy_class_list.append(vacancy_class)
+        # print("IDD URL",vacancy_class.idd,vacancy_class.url)
+    return vacancy_class_list
 
 
+def print_vacancies(vacancies: list):
+    i = 0
+    while i < len(vacancies):
+        vac_item = vacancies[i]
+        print(vac_item.idd,vac_item.url,vac_item.company,vac_item.title,vac_item.employment_form,vac_item.salary_to,
+              vac_item.description,vac_item.location)
+        print(vac_item.idd, vac_item.url)
+        i += 1
 
 def filter_vacancies(vacancies_list: list, filter_words: list):
     """Функция фильтрации вакансий по"""
@@ -97,8 +111,4 @@ def sort_vacancies(ranged_vacancies):
     #     return list_sorted
 
 def get_top_vacancies(sorted_vacancies, top_n):
-    pass
-
-
-def print_vacancies(top_vacancies):
     pass
