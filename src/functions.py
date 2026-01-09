@@ -46,7 +46,7 @@ def read_json(filename=None) -> list[dict]:
         # print(e)
         app_logger.error(e)
 
-def vacancy_class_load(vacancies_list: list):
+def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
     """Заполнение списка класса вакансий"""
     vacancy_class = Vacancy()
     vacancy_class_list = []
