@@ -1,5 +1,5 @@
 import json, os
-from src.classes import HeadHunterAPI,Vacancy
+from src.classes import HeadHunterAPI,Vacancy,JsonVacancyStorage
 from src.functions import vacancy_class_load, get_vacancies_by_salary, sort_vacancies, get_top_vacancies
 from src.functions import print_vacancies, read_json, vacancy_class_load
 
@@ -22,9 +22,10 @@ def user_interaction():
     with open(ROOT_DIR+'\\data\\vacations.json', 'w', encoding='utf-8') as f:
         json.dump(vacancies_list, f, indent=4, sort_keys=True, ensure_ascii=False)
     vacancies_list = read_json(ROOT_DIR+'\\data\\vacations.json')
-    print("перед vacancy_class_load \n", vacancies_list[1],"\n",vacancies_list[5])
+    # print("перед vacancy_class_load \n", vacancies_list[1],"\n",vacancies_list[5])
     vac_item = vacancy_class_load(vacancies_list)
-    print("после vacancy_class_load \n",vac_item[1].url, "\n", vac_item[5].url)
+    # print("после vacancy_class_load \n",vac_item[1].url, "\n", vac_item[5].url)
+    print("ВАКАНСИИ\n")
     print_vacancies(vac_item)
     # filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
     # ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
@@ -35,3 +36,5 @@ def user_interaction():
 
 if __name__ == "__main__":
     user_interaction()
+    storage = JsonVacancyStorage('vacancies.json')
+    #storage.add_vacancy(vacancy) # добавить из класса вакансий
