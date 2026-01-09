@@ -48,10 +48,11 @@ def read_json(filename=None) -> list[dict]:
 
 def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
     """Заполнение списка класса вакансий"""
-    vacancy_class = Vacancy()
+
     vacancy_class_list = []
     idd = 0
     for vacancy_item in vacancies_list:
+        vacancy_class = Vacancy()
         idd = idd + 1
         vacancy_class.idd = idd
         vacancy_class.url = vacancy_item["employer"]["vacancies_url"]
