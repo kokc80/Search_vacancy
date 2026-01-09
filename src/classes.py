@@ -1,6 +1,8 @@
 #  Классы
 import requests
 from abc import ABC, abstractmethod
+import json
+from typing import List, Dict
 
 
 class Parser(ABC):
@@ -39,7 +41,7 @@ class HeadHunterAPI(Parser):
         """Получение списка вакансий"""
         self.params['text'] = keyword
         while self.params.get('page') != 2:
-            print("PAGE", self.params.get('page'))
+            # print("PAGE", self.params.get('page'))
             response = requests.get(self.url, headers=self.headers, params=self.params)
             vacancies_items = response.json()['items']
             # print("VAC\n", vacancies_items)
@@ -62,9 +64,6 @@ class Vacancy:
     location: str
     description: str
 
-from abc import ABC, abstractmethod
-import json
-from typing import List, Dict
 
 class VacancyStorage(ABC):
     @abstractmethod
@@ -82,6 +81,7 @@ class VacancyStorage(ABC):
         """Удалить вакансию по ID"""
         pass
 
+
 class JsonVacancyStorage(VacancyStorage):
     """Класс для записи в json"""
     def __init__(self, filename: str):
@@ -93,7 +93,6 @@ class JsonVacancyStorage(VacancyStorage):
             data = json.load(file)
             data.append(vacancy)
             json.dump(data, file, ensure_ascii=False, indent=4)
-
 
     def get_vacancies(self, criteria: Dict = None) -> List[Dict]:
         with open(self.filename, 'r') as file:
@@ -118,4 +117,4 @@ if __name__ == "__main__":
     hh_api = HeadHunterAPI()
     hh_api.connect_to_api()
     api_vacantions = hh_api.load_vacancies("Python")
-    print("REZ VACANTIONS", api_vacantions)
+    # print("REZ VACANTIONS", api_vacantions)
