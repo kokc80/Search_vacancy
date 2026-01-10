@@ -1,20 +1,21 @@
 import json
 import os
-from src.classes import (HeadHunterAPI, JsonVacancyStorage)
-from src.functions import (vacancy_class_load, get_vacancies_by_salary, sort_vacancies, get_top_vacancies,
-                           print_vacancies, read_json)
+from src.cl_storage import (JsonVacancyStorage)
+from src.cl_parser import (HeadHunterAPI)
+from src.functions import (vacancy_class_load, print_vacancies, read_json, filter_vacancies)
+# get_vacancies_by_salary, sort_vacancies, get_top_vacancies)
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-def user_interaction():
+def user_interaction() -> None:
     # Функция для взаимодействия с пользователем
     platforms = HeadHunterAPI()
     # search_query = input("Введите поисковый запрос: ") # Python
     search_query = "Python"
     # filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split() # currency = "RUR", area = "131"
-    filter_words = "'currency': 'RUR'"
+    filter_words = ("разработка", "SQL")
     # top_n = int(input("Введите количество вакансий для вывода в топ N: "))
     top_n = 5
     # salary_range = input("Введите диапазон зарплат: ") # 10000 - 200000
@@ -25,8 +26,9 @@ def user_interaction():
     vacancies_list = read_json(ROOT_DIR + '\\data\\vacations.json')
     vac_item = vacancy_class_load(vacancies_list)
     print("ВАКАНСИИ\n", filter_words, top_n, salary_range)
-    print_vacancies(vac_item)
-    # filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
+    filtered_vacancies = filter_vacancies(vac_item, filter_words)
+    print(f"Количество отфильтрованных вакансий по словам {filter_words} - {len(filtered_vacancies)} шт.")
+    print_vacancies(filtered_vacancies)
     # ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
     # sorted_vacancies = sort_vacancies(ranged_vacancies)
     # top_vacancies = get_top_vacancies(sorted_vacancies, top_n)

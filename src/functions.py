@@ -1,7 +1,9 @@
 import json
 import os
 import logging
-from src.classes import Vacancy
+
+
+from src.cl_vacancy import Vacancy
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root_logger = logging.getLogger()
@@ -44,6 +46,16 @@ def read_json(filename=None) -> list[dict]:
         app_logger.error(e)
 
 
+def print_vacancies(vacancies: list):
+    """Печать вакансий"""
+    i = 0
+    while i < len(vacancies):
+        vac_item = vacancies[i]
+        print(vac_item.idd, vac_item.name, vac_item.url, vac_item.requiredskills, vac_item.company, vac_item.title,
+              vac_item.employment_form, vac_item.salary_to, vac_item.description, vac_item.location)
+        i += 1
+
+
 def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
     """Заполнение списка класса вакансий"""
     vacancy_class_list = []
@@ -52,40 +64,36 @@ def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
         vacancy_class = Vacancy()
         idd = idd + 1
         vacancy_class.idd = idd
-        vacancy_class.url = vacancy_item["employer"]["vacancies_url"]
+        vacancy_class.name = vacancy_item["name"]
+        vacancy_class.url = vacancy_item["alternate_url"]
         vacancy_class.company = vacancy_item["employer"]["name"]
         vacancy_class.title = vacancy_item["name"]
         vacancy_class.employment_form = (vacancy_item["employment_form"]["id"]
                                          + " - " + vacancy_item["employment_form"]["name"])
-        vacancy_class.salary_currency = vacancy_item.get("salary", {}.get("currency", "Not Found"))
-        vacancy_class.salary_to = vacancy_item.get("salary", {}.get("to", "Note Found"))
-        vacancy_class.requiredSkills = vacancy_item["snippet"]["requirement"]
+        vacancy_class.salary_currency = vacancy_item.get("salary", {}.get("currency", "None"))
+        vacancy_class.salary_to = vacancy_item.get("salary", {}.get("to", "None"))
+        vacancy_class.requiredskills = vacancy_item.get("snippet", {}.get("requirement", "None"))
         vacancy_class.description = vacancy_item["snippet"]["responsibility"]
         vacancy_class.location = vacancy_item.get("address", {}.get("raw", "Not Found"))
         vacancy_class_list.append(vacancy_class)
     return vacancy_class_list
 
 
-def print_vacancies(vacancies: list):
-    """Печать вакансий"""
-    i = 0
-    while i < len(vacancies):
-        vac_item = vacancies[i]
-        print(vac_item.idd, vac_item.url, vac_item.company, vac_item.title, vac_item.employment_form,
-              vac_item.salary_to, vac_item.description, vac_item.location)
-        i += 1
-
-
-def filter_vacancies(vacancies_list: list, filter_words: list):
-    """Функция фильтрации вакансий по"""
+def filter_vacancies(vacancies_list: list[Vacancy], filter_words: list):
+    """Функция фильтрации вакансий по навыкам"""
     filtered_list: list = []
     i = 0
     while i < len(filter_words):
-        print(filter_words[i])
-        for dict_item in vacancies_list:
-            if filter_words[i] in dict_item:
-                filtered_list.extend(dict_item)
-        print(filter_words[i], dict_item)
+        j = 0
+        filter_word = filter_words[i]
+        while j < len(vacancies_list):
+            if vacancies_list[j].requiredskills.get("requirement") is None:
+                reqSkils = "None"
+            else:
+                reqSkils = vacancies_list[j].requiredskills.get("requirement")
+            if (filter_word in reqSkils and reqSkils != "None"):
+                filtered_list.append(vacancies_list[j])
+            j = j + 1
         i += 1
     return filtered_list
 
