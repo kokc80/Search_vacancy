@@ -23,24 +23,24 @@ class VacancyStorage(ABC):
 class JsonVacancyStorage(VacancyStorage):
     """Класс для записи в json"""
     def __init__(self, filename: str):
-        self.filename = filename
+        self.__filename = filename
 
     def add_vacancy(self, vacancy: Dict) -> None:
         """добавление вакансии в файл json"""
-        with open(self.filename, 'w') as file:
+        with open(self.__filename, 'w') as file:
             data = json.load(file)
             data.append(vacancy)
             json.dump(data, file, ensure_ascii=False, indent=4)
 
     def get_vacancies(self, criteria: Dict = None) -> List[Dict]:
-        with open(self.filename, 'r') as file:
+        with open(self.__filename, 'r') as file:
             data = json.load(file)
             if criteria:
                 return [v for v in data if all(k in v and v[k] == criteria[k] for k in criteria)]
             return data
 
     def delete_vacancy(self, id: int) -> bool:
-        with open(self.filename, 'r+') as file:
+        with open(self.__filename, 'r+') as file:
             data = json.load(file)
             try:
                 del data[id]

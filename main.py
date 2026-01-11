@@ -2,8 +2,8 @@ import json
 import os
 from src.cl_storage import (JsonVacancyStorage)
 from src.cl_parser import (HeadHunterAPI)
-from src.functions import (vacancy_class_load, print_vacancies, read_json, filter_vacancies)
-# get_vacancies_by_salary, sort_vacancies, get_top_vacancies)
+from src.functions import (vacancy_class_load, print_vacancies, read_json, filter_vacancies, get_vacancies_by_salary,
+                           sort_vacancies, get_top_vacancies)
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,20 +19,19 @@ def user_interaction() -> None:
     # top_n = int(input("Введите количество вакансий для вывода в топ N: "))
     top_n = 5
     # salary_range = input("Введите диапазон зарплат: ") # 10000 - 200000
-    salary_range = "10000 - 200000"
+    salary_range = "80000 - 500000"
     vacancies_list = platforms.load_vacancies(search_query)
     with open(ROOT_DIR + '\\data\\vacations.json', 'w', encoding='utf-8') as f:
         json.dump(vacancies_list, f, indent=4, sort_keys=True, ensure_ascii=False)
     vacancies_list = read_json(ROOT_DIR + '\\data\\vacations.json')
     vac_item = vacancy_class_load(vacancies_list)
-    print("ВАКАНСИИ\n", filter_words, top_n, salary_range)
     filtered_vacancies = filter_vacancies(vac_item, filter_words)
-    print(f"Количество отфильтрованных вакансий по словам {filter_words} - {len(filtered_vacancies)} шт.")
-    print_vacancies(filtered_vacancies)
-    # ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
-    # sorted_vacancies = sort_vacancies(ranged_vacancies)
-    # top_vacancies = get_top_vacancies(sorted_vacancies, top_n)
-    # print_vacancies(top_vacancies)
+    ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
+    sorted_vacancies = sort_vacancies(ranged_vacancies)
+    top_vacancies = get_top_vacancies(sorted_vacancies, top_n)
+    print("ТОП:", top_n, "ВАКАНСИЙ Количество отфильтрованных вакансий по словам "
+          f"{filter_words} - {len(ranged_vacancies)} шт. с ЗП ({salary_range})")
+    print_vacancies(top_vacancies)
 
 
 if __name__ == "__main__":

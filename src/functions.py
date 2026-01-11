@@ -1,8 +1,6 @@
 import json
 import os
 import logging
-
-
 from src.cl_vacancy import Vacancy
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,20 +46,19 @@ def read_json(filename=None) -> list[dict]:
 
 def print_vacancies(vacancies: list):
     """Печать вакансий"""
-    i = 0
-    while i < len(vacancies):
-        vac_item = vacancies[i]
-        print(vac_item.idd, vac_item.name, vac_item.url, vac_item.requiredskills, vac_item.company, vac_item.title,
-              vac_item.employment_form, vac_item.salary_to, vac_item.description, vac_item.location)
-        i += 1
+    for vacancy in vacancies:
+        print("idd:", vacancy.idd, " url:", vacancy.url, " вакансия:", vacancy.name,
+              "Валюта", vacancy.salary_cur, "от", vacancy.salary_from, "до", vacancy.salary_to,
+              "\nНавыки", vacancy.required_skills)
 
 
-def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
+def vacancy_class_load(vacancies_list: list[Vacancy]) -> list[Vacancy]:
     """Заполнение списка класса вакансий"""
     vacancy_class_list = []
     idd = 0
     for vacancy_item in vacancies_list:
-        vacancy_class = Vacancy()
+        vacancy_class = Vacancy(0, "", "", "", "", "", "",
+                                0, 0, "", "", "")
         idd = idd + 1
         vacancy_class.idd = idd
         vacancy_class.name = vacancy_item["name"]
@@ -70,9 +67,20 @@ def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
         vacancy_class.title = vacancy_item["name"]
         vacancy_class.employment_form = (vacancy_item["employment_form"]["id"]
                                          + " - " + vacancy_item["employment_form"]["name"])
-        vacancy_class.salary_currency = vacancy_item.get("salary", {}.get("currency", "None"))
-        vacancy_class.salary_to = vacancy_item.get("salary", {}.get("to", "None"))
-        vacancy_class.requiredskills = vacancy_item.get("snippet", {}.get("requirement", "None"))
+        if vacancy_item["salary"] is not None:
+            if vacancy_item["salary"]["currency"] is not None:
+                vacancy_class.salary_cur = vacancy_item["salary"]["currency"]
+            else:
+                vacancy_class.salary_cur = "не определено"
+            if vacancy_item["salary"]["from"] is not None:
+                vacancy_class.salary_from = vacancy_item["salary"]["from"]
+            else:
+                vacancy_class.salary_from = 0
+            if vacancy_item["salary"]["to"] is not None:
+                vacancy_class.salary_to = vacancy_item["salary"]["to"]
+            else:
+                vacancy_class.salary_to = 0
+        vacancy_class.required_skills = vacancy_item.get("snippet", {}.get("requirement", "None"))
         vacancy_class.description = vacancy_item["snippet"]["responsibility"]
         vacancy_class.location = vacancy_item.get("address", {}.get("raw", "Not Found"))
         vacancy_class_list.append(vacancy_class)
@@ -87,10 +95,10 @@ def filter_vacancies(vacancies_list: list[Vacancy], filter_words: list):
         j = 0
         filter_word = filter_words[i]
         while j < len(vacancies_list):
-            if vacancies_list[j].requiredskills.get("requirement") is None:
+            if vacancies_list[j].required_skills.get("requirement") is None:
                 reqSkils = "None"
             else:
-                reqSkils = vacancies_list[j].requiredskills.get("requirement")
+                reqSkils = vacancies_list[j].required_skills.get("requirement")
             if (filter_word in reqSkils and reqSkils != "None"):
                 filtered_list.append(vacancies_list[j])
             j = j + 1
@@ -98,25 +106,22 @@ def filter_vacancies(vacancies_list: list[Vacancy], filter_words: list):
     return filtered_list
 
 
-def get_vacancies_by_salary(filtered_vacancies, salary_range):
+def get_vacancies_by_salary(filtered_vacancies: list[Vacancy], salary_range):
     """Функция фильтрации вакансий по зарплате"""
     vacancies_by_salary: list = []
     salary = salary_range.split(sep=" - ", maxsplit=2)  # Пример: 10000 - 150000
+    salary_min = salary[0]
+    salary_max = salary[1]
     for dict_item in filtered_vacancies:
-        if dict_item.get("salary") in range(int(salary[0]), int(salary[1])):
+        if dict_item.salary_from in range(int(salary_min), int(salary_max)):
             vacancies_by_salary.append(dict_item)
     return vacancies_by_salary
 
 
-def sort_vacancies(ranged_vacancies):
-    pass
-    # def sort_by_date(data_list: List, reverse1: bool = True) -> List:
-    #     """Функия принимает список словарей и необязательный параметр,
-    #     задающий порядок сортировки (по умолчанию — убывание). Функция
-    #     должна возвращать новый список, отсортированный по дате (date)"""
-    #     list_sorted: List = sorted(data_list, key=lambda x: x.get("date"), reverse=reverse1)
-    #     return list_sorted
+def sort_vacancies(ranged_vacancies: list[Vacancy]) -> list[Vacancy]:
+    """Функция сортировки для вакансий по убыванию"""
+    return sorted(ranged_vacancies, key=lambda p: p.idd, reverse=True)
 
 
-def get_top_vacancies(sorted_vacancies, top_n):
-    pass
+def get_top_vacancies(sorted_vacancies: list[Vacancy], top_n):
+    return sorted_vacancies[:top_n]
