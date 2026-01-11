@@ -15,10 +15,16 @@ git clone  https://github.com/kokc80/HW.11.1
 2. Установите зависимости
 poetry install
 
-## модуль classes.py
-class Parser(ABC) - абстрактный класс для работы с API сервиса с вакансиями
-class HeadHunterAPI(Parser)- класс для работы с вакансиями.
+## модуль cl_parser.py
+class Parser(ABC): Класс Parser является абстрактным родительским классом
+class HeadHunterAPI(Parser): Класс для получения вакансий с API HeadHunter
+
+## модуль cl_vacancy.py
 class Vacancy - класс представляет одну вакансию аттрибуты класса - части вакансии из разметки
+
+## модуль cl_storage.py
+class VacancyStorage(ABC): класс для работы с вакансиями
+class JsonVacancyStorage(VacancyStorage): класс для работы с json
 
 ## модуль functions.py
 def filter_vacancies(vacancies_list: list, filter_words: list): фильтр вакансий

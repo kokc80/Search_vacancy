@@ -1,10 +1,10 @@
 import json
 import os
-from src.cl_storage import (JsonVacancyStorage)
-from src.cl_parser import (HeadHunterAPI)
-from src.functions import (vacancy_class_load, print_vacancies, read_json, filter_vacancies, get_vacancies_by_salary,
-                           sort_vacancies, get_top_vacancies)
 
+from src.cl_parser import HeadHunterAPI
+from src.cl_storage import JsonVacancyStorage
+from src.functions import (filter_vacancies, get_top_vacancies, get_vacancies_by_salary, print_vacancies, read_json,
+                           sort_vacancies, vacancy_class_load)
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 

@@ -1,6 +1,7 @@
 import json
-import os
 import logging
+import os
+
 from src.cl_vacancy import Vacancy
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
