@@ -53,7 +53,7 @@ def print_vacancies(vacancies: list):
               "\nНавыки", vacancy.required_skills)
 
 
-def vacancy_class_load(vacancies_list: list) -> list[Vacancy]:
+def vacancy_class_load(vacancies_list: list[Vacancy]) -> list[Vacancy]:
     """Заполнение списка класса вакансий"""
     vacancy_class_list = []
     idd = 0

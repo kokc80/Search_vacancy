@@ -1,5 +1,5 @@
 #  Классы
-
+from typing import Dict, List, Optional
 
 class Vacancy:
     """ класс представляет одну вакансию аттрибуты класса - части вакансии из разметки"""
@@ -32,3 +32,4 @@ class Vacancy:
         self.required_skills = required_skills
         self.location = location
         self.description = description
+

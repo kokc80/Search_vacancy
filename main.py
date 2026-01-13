@@ -1,6 +1,7 @@
 import json
 import os
 
+from pprint import pprint
 from src.cl_parser import HeadHunterAPI
 from src.cl_storage import JsonVacancyStorage
 from src.functions import (filter_vacancies, get_top_vacancies, get_vacancies_by_salary, print_vacancies, read_json,
@@ -33,8 +34,8 @@ def user_interaction() -> None:
           f"{filter_words} - {len(ranged_vacancies)} шт. с ЗП ({salary_range})")
     print_vacancies(top_vacancies)
 
+    storage = JsonVacancyStorage(ROOT_DIR+"\\data\\vacancies.json")
+    storage.add_vacancy(top_vacancies)  # добавить из класса вакансий
 
 if __name__ == "__main__":
     user_interaction()
-    storage = JsonVacancyStorage('vacancies.json')
-    # storage.add_vacancy(vacancy) # добавить из класса вакансий
