@@ -28,11 +28,8 @@ class JsonVacancyStorage(VacancyStorage):
     def add_vacancy(self, vacancy: Dict) -> None:
         """добавление вакансии в файл json"""
         with open(self.__filename, 'r') as file:
-            # print("ADD")
             data = json.load(file)
-            # print(data)
             data.append(vacancy)
-        with open(self.__filename, 'w') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
 
     def get_vacancies(self, criteria: Dict = None) -> List[Dict]:

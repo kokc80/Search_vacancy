@@ -27,7 +27,7 @@ class HeadHunterAPI(Parser):
     def _connect_to_api(self):
         """Метод подключения к API"""
         # print ("connect")
-        response = requests.get(self.__url, headers=self._headers, params=self._params)
+        response = requests.get(self.url, headers=self.headers, params=self.params)
         status = response.status_code
         if status == 200:
             print("connect 200")
