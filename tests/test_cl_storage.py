@@ -1,8 +1,6 @@
 import pytest
 from src.cl_vacancy import Vacancy
 from src.cl_storage import JsonVacancyStorage
-import json
-import os
 
 
 @pytest.fixture

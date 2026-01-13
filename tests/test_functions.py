@@ -1,6 +1,5 @@
 import os
 import unittest
-import pytest
 from unittest.mock import mock_open, patch
 from src.functions import read_json, filter_vacancies, vacancy_class_load
 from src.cl_vacancy import Vacancy
@@ -57,29 +56,30 @@ class TestReadJson(unittest.TestCase):
         result = read_json("non_existent_file.json")
         self.assertEqual(result, [])
 
-VAC1 = Vacancy(1, "Name 1", "url1","Company1", "title1", "EForm1",
+
+VAC1 = Vacancy(1, "Name 1", "url1", "Company1", "title1", "EForm1",
                "RUR", 100, 200,
-               {'requirement':"Програм-е1", 'test': "test"}, "Локация1","Описание1")
-VAC2 = Vacancy(2, "Name 1", "url1","Company1", "title1", "EForm1",
+               {'requirement': "Програм-е1", 'test': "test"}, "Локация1", "Описание1")
+VAC2 = Vacancy(2, "Name 1", "url1", "Company1", "title1", "EForm1",
                "RUR", 100, 200,
-               {'requirement':"Програм-е2", 'test': "test"}, "Локация1","Описание1")
-VAC3 = Vacancy(3, "Name 1", "url1","Company1", "title1", "EForm1",
+               {'requirement': "Програм-е2", 'test': "test"}, "Локация1", "Описание1")
+VAC3 = Vacancy(3, "Name 1", "url1", "Company1", "title1", "EForm1",
                "RUR", 100, 200,
-               {'requirement':"Програм-е3", 'test': "test"}, "Локация1","Описание1")
+               {'requirement': "Програм-е3", 'test': "test"}, "Локация1", "Описание1")
 vacancies = [VAC1, VAC2, VAC3]
 
 
 def test_vacancy_class_load():
     pass
     load_vacancy = vacancy_class_load(vacancies)
-    # assert load_vacancy[0].idd == 1
-    # assert load_vacancy[1].idd == 2
-    # assert load_vacancy[2].idd == 3
+    assert load_vacancy[0].idd == 1
+    assert load_vacancy[1].idd == 2
+    assert load_vacancy[2].idd == 3
 
 
 def test_filter_vacancies():
     assert len(vacancies) == 3
-    filtered_vac = filter_vacancies(vacancies,("Програм-е3","Програм-е2"))
+    filtered_vac = filter_vacancies(vacancies, ("Програм-е3", "Програм-е2"))
 
 
 if __name__ == "__main__":

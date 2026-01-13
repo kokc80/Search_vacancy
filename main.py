@@ -38,6 +38,6 @@ if __name__ == "__main__":
     user_interaction()
     storage = JsonVacancyStorage('vacancies.json')
     vacancy1 = Vacancy(idd="1000", name="Python Developer", url="http://example.com/1", salary_currency="RUR",
-                company="Company1", title="Title1", employment_form="Eform1", required_skills="RS1", location="Loc1",
-                description="Python Test description", salary_from=100000, salary_to=150000)
+                       company="Company1", title="Title1", employment_form="Eform1", required_skills="RS1",
+                       location="Loc1", description="Python Test description", salary_from=100000, salary_to=150000)
     storage.add_vacancy(vacancy1)  # добавить из класса вакансий

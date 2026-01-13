@@ -16,8 +16,10 @@ def mock_hh_api(monkeypatch):
     def mock_get(*args, **kwargs):
         return MockResponse({
             'items': [
-                {'name': 'Vacancy 1', 'salary': {'from': 1000, 'to': 2000}, 'area': {'name': 'Москва'}, 'alternate_url': 'http://example.com/1'},
-                {'name': 'Vacancy 2', 'salary': {'from': 2000, 'to': 3000}, 'area': {'name': 'Москва'}, 'alternate_url': 'http://example.com/2'}
+                {'name': 'Vacancy 1', 'salary': {'from': 1000, 'to': 2000}, 'area': {'name': 'Москва'},
+                 'alternate_url': 'http://example.com/1'},
+                {'name': 'Vacancy 2', 'salary': {'from': 2000, 'to': 3000}, 'area': {'name': 'Москва'},
+                 'alternate_url': 'http://example.com/2'}
             ]
         }, 200)
 
