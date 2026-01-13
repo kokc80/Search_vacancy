@@ -1,6 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 from typing import Dict, List
+from src.cl_vacancy import Vacancy
 
 
 class VacancyStorage(ABC):
@@ -25,7 +26,7 @@ class JsonVacancyStorage(VacancyStorage):
     def __init__(self, filename: str):
         self.__filename = filename
 
-    def add_vacancy(self, vacancy: Dict) -> None:
+    def add_vacancy(self, vacancy: list[Vacancy]) -> None:
         """добавление вакансии в файл json"""
         with open(self.__filename, 'r') as file:
             data = json.load(file)
