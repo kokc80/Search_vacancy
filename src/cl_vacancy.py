@@ -18,6 +18,7 @@ class Vacancy:
     location: str
     description: str
 
+
     def __init__(self, idd, name, url, company, title, employment_form, salary_currency, salary_from, salary_to,
                  required_skills, location, description):
         self.idd = idd
@@ -32,3 +33,20 @@ class Vacancy:
         self.required_skills = required_skills
         self.location = location
         self.description = description
+
+    def to_dict(self):
+        return {
+            "idd": self.idd,
+            "name": self.name,
+            "url": self.url,
+            "company":self.company,
+            "title":self.title,
+            "employment_form":self.employment_form,
+            "salary_from":self.salary_from,
+            "salary_cur":self.salary_cur,
+            "salary_t":self.salary_to,
+            "required_skills":self.required_skills,
+            "location":self.location,
+            "description":self.description
+        }
+

@@ -41,7 +41,7 @@ trans_test_value = [
 @patch("src.functions.read_json")
 def test_read_json(mock_file):
     mock_file.return_value.json.return_value = trans_test_value
-    assert read_json(file_path_data) == trans_test_value
+    assert read_json(mock_file) == trans_test_value
 
 
 def test_read_json_err():
@@ -70,7 +70,6 @@ vacancies = [VAC1, VAC2, VAC3]
 
 
 def test_vacancy_class_load():
-    pass
     load_vacancy = vacancy_class_load(vacancies)
     assert load_vacancy[0].idd == 1
     assert load_vacancy[1].idd == 2
@@ -78,8 +77,8 @@ def test_vacancy_class_load():
 
 
 def test_filter_vacancies():
-    assert len(vacancies) == 3
     filtered_vac = filter_vacancies(vacancies, ("Програм-е3", "Програм-е2"))
+    assert len(filtered_vac) == 2
 
 
 if __name__ == "__main__":

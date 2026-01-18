@@ -28,17 +28,19 @@ class JsonVacancyStorage(VacancyStorage):
 
     def add_vacancy(self, vacancy: list[Vacancy]) -> None:
         """добавление вакансии в файл json"""
-        with open(self.__filename, 'r') as file:
+        with open(self.__filename, 'r', encoding='utf-8') as file:
             data = json.load(file)
-            data.append(vacancy)
+            print(data)
+        with open(self.__filename, 'w', encoding='utf-8') as file:
+            # print("VV\n",Vacancy)
+            data.append(vacancy.to_dict())
             json.dump(data, file, ensure_ascii=False, indent=4)
 
-    def get_vacancies(self, criteria: Dict = None) -> List[Dict]:
+    def get_vacancies(self) -> List[Dict]:
         with open(self.__filename, 'r') as file:
-            data = json.load(file)
-            if criteria:
-                return [v for v in data if all(k in v and v[k] == criteria[k] for k in criteria)]
-            return data
+            with open(self.__filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return data
 
     def delete_vacancy(self, id: int) -> bool:
         with open(self.__filename, 'r+') as file:

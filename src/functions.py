@@ -62,7 +62,7 @@ def vacancy_class_load(vacancies_list: list[Vacancy]) -> list[Vacancy]:
                                 0, 0, "", "", "")
         idd = idd + 1
         vacancy_class.idd = idd
-        vacancy_class.name = vacancy_item["name"]
+        vacancy_class.name = vacancy_item.get("name")
         vacancy_class.url = vacancy_item["alternate_url"]
         vacancy_class.company = vacancy_item["employer"]["name"]
         vacancy_class.title = vacancy_item["name"]
