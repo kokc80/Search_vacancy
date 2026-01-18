@@ -43,4 +43,5 @@ if __name__ == "__main__":
                        company="Company1", title="Title1", employment_form="Eform1", required_skills="RS1",
                        location="Loc1", description="Python Test description", salary_from=100000, salary_to=150000)
     storage.add_vacancy(vacancy1)  # добавить из класса вакансий
-    storage.get_vacancies()
+    get_v = storage.get_vacancies() #Вывести все вакансии
+    print("\nВыбор всех вакансий из файла vacantions idd\n", get_v)
