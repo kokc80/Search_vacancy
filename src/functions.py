@@ -24,18 +24,19 @@ def read_json(filename=None) -> list[dict]:
     try:
         if os.path.isfile(filename):
             # Открываем файл и читаем строки
-            with open(filename, encoding="utf-8") as f:
+            with open(filename, 'r', encoding="utf-8") as f:
                 json_list = json.load(f)
                 if type(json_list) is list:
-                    app_logger.info(" Удачный запуск")
                     return json_list
                 else:
                     app_logger.error("Не удачный запуск")
+                    # print("RJ", json_list)
                     return []
         else:
+            print("Файл не найден")
             return []
     except FileNotFoundError:
-        # print("Файл не найден")
+        print("Файл не найден")
         app_logger.error("Файл не найден")
     except json.JSONDecodeError as e:
         # print(f"Сообщение об ошибке: {e.msg} Строка: {e.lineno}, колонка: {e.colno}")
@@ -62,7 +63,7 @@ def vacancy_class_load(vacancies_list: list[Vacancy]) -> list[Vacancy]:
                                 0, 0, "", "", "")
         idd = idd + 1
         vacancy_class.idd = idd
-        vacancy_class.name = vacancy_item.get("name")
+        vacancy_class.name = vacancy_item["name"]
         vacancy_class.url = vacancy_item["alternate_url"]
         vacancy_class.company = vacancy_item["employer"]["name"]
         vacancy_class.title = vacancy_item["name"]

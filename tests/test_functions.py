@@ -1,11 +1,13 @@
-import os
+import os, json
 from src.functions import read_json, filter_vacancies, vacancy_class_load
 from src.cl_vacancy import Vacancy
+import unittest
+from unittest.mock import mock_open, patch
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-file_path_data = f"{ROOT_DIR}\\data\\vacations_test.json"
+file_path_data = f"{ROOT_DIR}\\data\\test.json"
 
-
+# 1. Задаём тестовые данные
 trans_test_value = [
     {
         "id": 207126257,
@@ -13,7 +15,7 @@ trans_test_value = [
         "date": "2019-07-15T11:47:40.496961",
         "operationAmount": {"amount": "92688.46", "currency": {"name": "USD", "code": "USD"}},
         "description": "Открытие вклада",
-        "to": "Счет 35737585785074382265",
+        "to": "Счет 35737585785074382265"
     },
     {
         "id": 957763565,
@@ -22,7 +24,7 @@ trans_test_value = [
         "operationAmount": {"amount": "87941.37", "currency": {"name": "руб.", "code": "RUB"}},
         "description": "Перевод со счета на счет",
         "from": "Счет 46363668439560358409",
-        "to": "Счет 18889008294666828266",
+        "to": "Счет 18889008294666828266"
     },
     {
         "id": 667307132,
@@ -31,36 +33,20 @@ trans_test_value = [
         "operationAmount": {"amount": "97853.86", "currency": {"name": "руб.", "code": "RUB"}},
         "description": "Перевод с карты на счет",
         "from": "Maestro 1308795367077170",
-        "to": "Счет 96527012349577388612",
+        "to": "Счет 96527012349577388612"
     }
 ]
 
 
-
-
-# def test_read_json(mocker):
-#     # Мокируем функцию read_json
-#     mock_json = mocker.patch("src.functions.read_json")
-#     mock_json.return_value = trans_test_value
-#     # Вызываем функцию с реальным аргументом (например, путём к файлу)
-#     result = read_json(file_path_data)
-#     # Проверяем результат
-#     assert result == trans_test_value
-#     # Дополнительно можно проверить, что мок был вызван
-#     mock_json.assert_called_once_with(file_path_data)
-
-
-# def test_read_json_err():
- #     result = read_json("no_file.json")
- #     assert result == []
-#
-#
-# class TestReadJson(unittest.TestCase):
-#     @patch("builtins.open", new_callable=mock_open)
-#     def test_file_not_found_error(self, mock_open):
-#         mock_open.side_effect = FileNotFoundError
-#         result = read_json("non_existent_file.json")
-#         self.assertEqual(result, [])
+class TestReadJson(unittest.TestCase):
+    @patch('builtins.open', new_callable=mock_open, read_data=json.dumps(trans_test_value))
+    def test_read_json(self, mock_file):
+        # Вызываем реальную функцию, но с мокированным open
+        result = read_json(file_path_data)
+        # Проверяем, что результат совпадает с тестовыми данными
+        self.assertEqual(result, trans_test_value)
+        # Дополнительно: проверяем, что open был вызван с нужным путём
+        mock_file.assert_called_with(file_path_data, 'r', encoding='utf-8')
 
 
 VAC1 = Vacancy(1, "Name 1", "url1", "Company1", "title1", "EForm1",
@@ -75,17 +61,17 @@ VAC3 = Vacancy(3, "Name 1", "url1", "Company1", "title1", "EForm1",
 vacancies = [VAC1, VAC2, VAC3]
 
 
+
+def test_filter_vacancies():
+    filtered_vac = filter_vacancies(vacancies, ("Програм-е3", "Програм-е2"))
+    assert len(filtered_vac) == 2
+
+
+if __name__ == "__main__":
+    unittest.main()
+
 # def test_vacancy_class_load():
 #     load_vacancy = vacancy_class_load(vacancies)
 #     assert load_vacancy[0].idd == 1
 #     assert load_vacancy[1].idd == 2
 #     assert load_vacancy[2].idd == 3
-#
-#
-def test_filter_vacancies():
-    filtered_vac = filter_vacancies(vacancies, ("Програм-е3", "Програм-е2"))
-    assert len(filtered_vac) == 2
-#
-#
-# if __name__ == "__main__":
-#     unittest.main()
